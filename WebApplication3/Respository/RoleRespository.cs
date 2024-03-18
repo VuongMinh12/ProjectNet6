@@ -16,7 +16,7 @@ namespace WebApplication3.Respository
         }
         public async Task<int> AddRole(Role role)
         {
-            if (role == null) throw new ArgumentNullException();
+            
             using (var con = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();
@@ -30,7 +30,7 @@ namespace WebApplication3.Respository
 
         public async Task<bool> DeleteRole(int role)
         {
-            if (role == null) throw new ArgumentNullException();
+           
             using (var conn = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();
@@ -51,7 +51,7 @@ namespace WebApplication3.Respository
 
         public async Task<bool> UpdateRole(Role role)
         {
-            if (role == null) throw new ArgumentNullException();
+            
             using (var con = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();

@@ -18,7 +18,7 @@ namespace WebApplication3.Respository
 
         public async Task<int> AddBrand(Brand brand)
         {
-            if (brand == null) throw new ArgumentNullException();
+            
             using (var con = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();
@@ -42,7 +42,7 @@ namespace WebApplication3.Respository
 
         public async Task<bool> UpdateBrand(Brand brand)
         {
-            if (brand == null) throw new ArgumentNullException();
+            
             using (var con = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();
@@ -58,7 +58,7 @@ namespace WebApplication3.Respository
 
         public async Task<bool> DeleteBrand(int brand)
         {
-            if (brand == null) throw new ArgumentNullException();
+            
             using (var conn = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();

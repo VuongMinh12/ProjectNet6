@@ -16,7 +16,7 @@ namespace WebApplication3.Respository
        
         public async Task<int> AddCategory(Category category)
         {
-            if (category == null) throw new ArgumentNullException();
+            
             using (var connec = _dapperContext.CreateConnection())
             {
                 
@@ -31,7 +31,7 @@ namespace WebApplication3.Respository
 
         public async Task<bool> DeleteCategory(int category)
         {
-            if(category == null) throw new ArgumentNullException();
+            
             using (var conn = _dapperContext.CreateConnection())
             {
                 
@@ -54,7 +54,7 @@ namespace WebApplication3.Respository
 
         public async Task<bool> UpdateCategory(Category category)
         {
-           if (category == null) throw new ArgumentNullException();
+           
            using (var con = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();

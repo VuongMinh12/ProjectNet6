@@ -27,6 +27,8 @@ namespace WebApplication3.Controllers
         {
             try
             {
+
+
                 return await brandRespository.AddBrand(brand);
             }
             catch (Exception ex)

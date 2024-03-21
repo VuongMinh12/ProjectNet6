@@ -16,9 +16,9 @@ namespace WebApplication3.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Brand>> GetAllBrand()
+        public async Task<IEnumerable<Brand>> GetBrand(BrandSearch brand)
         {
-            var brands = await brandRespository.GetAllBrand();
+            var brands = await brandRespository.GetBrand(brand);
             return brands;
         }
 
@@ -34,7 +34,7 @@ namespace WebApplication3.Controllers
             catch (Exception ex)
             {
 
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
         }
 
@@ -48,14 +48,14 @@ namespace WebApplication3.Controllers
             catch (Exception ex)
             {
 
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
 
 
         }
 
         [HttpDelete]
-        public async Task<bool> DeleteBrand(int id)
+        public async Task<bool> DeleteBrand(Brand id)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace WebApplication3.Controllers
             catch (Exception ex)
             {
 
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
 
         }

@@ -7,8 +7,8 @@ using WebApplication3.Respository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<KeyboardContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("KeyboardDbContext")));
+//builder.Services.AddDbContext<KeyboardContext>(options =>
+//                options.UseSqlServer(builder.Configuration.GetConnectionString("KeyboardDbContext")));
 
 
 builder.Services.AddSingleton<DapperContext>();

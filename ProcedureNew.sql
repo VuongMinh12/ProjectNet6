@@ -164,7 +164,7 @@ Create Proc AddUsers
  @Address varchar(255)
  )as
  begin
-	insert into Users (UserName,Password,Phone,Email,Address,IsActive,CreateDate) values ( @UserName, @Password , @Phone, @Email,  @Address, 1 , sysdate() )
+	insert into Users (UserName,Password,Phone,Email,Address,IsActive,CreateDate) values ( @UserName, @Password , @Phone, @Email,  @Address, 1 , getdate() )
 end
 
 
@@ -257,6 +257,7 @@ Create Proc AddBrand (
 )as
 begin
 	Insert into Brand (BrandName, Description, IsActive) values (@BrandName, @Description, 1)
+	Select SCOPE_IDENTITY()  
 end
 
 -- Update Brand

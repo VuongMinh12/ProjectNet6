@@ -18,51 +18,76 @@ namespace WebApplication3.Respository
 
         public async Task<int> AddBrand(Brand brand)
         {
-            
+
             using (var con = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();
                 parameter.Add("@BrandName", brand.BrandName);
                 parameter.Add("@Description", brand.Description);
 
-                await con.ExecuteAsync("AddBrand", parameter, commandType: CommandType.StoredProcedure);
-                return brand.BrandId;
+                brand.BrandId = Convert.ToInt32( await con.ExecuteScalarAsync("AddBrand", parameter, commandType: CommandType.StoredProcedure));
+               
+
+                return brand.BrandId ;
             }
         }
 
 
-        public async Task<IEnumerable<Brand>> GetAllBrand()
+        public async Task<IEnumerable<Brand>> GetBrand(BrandSearch brand)
         {
-            using (var connection = _dapperContext.CreateConnection())
+            try
             {
-                return await connection.QueryAsync<Brand>("GetAllBrand", commandType: CommandType.StoredProcedure);
+                using (var connection = _dapperContext.CreateConnection())
+                {
+                    var parameter = new DynamicParameters();
+                    parameter.Add("@PageNumber", brand.PageNumber);
+                    parameter.Add("@PageSize", brand.PageSize);
+                    parameter.Add("@BrandName", brand.BrandName);
+                    parameter.Add("@IsActive", brand.IsActive);
+
+                    var brands = await connection.QueryAsync<Brand>("GetBrand", parameter, commandType: CommandType.StoredProcedure);
+
+                    return brands.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
         }
 
         public async Task<bool> UpdateBrand(Brand brand)
         {
-            
-            using (var con = _dapperContext.CreateConnection())
+            try
             {
-                var parameter = new DynamicParameters();
-                parameter.Add("@BrandName", brand.BrandName);
-                parameter.Add("@Description", brand.Description);
-                parameter.Add("@IsActive", brand.IsActive);
-                parameter.Add("@BrandId", brand.BrandId);
+                using (var con = _dapperContext.CreateConnection())
+                {
 
-                int rowsAffected = await con.ExecuteAsync("UpdateBrand", parameter, commandType: CommandType.StoredProcedure);
-                return rowsAffected > 0;
+                    var parameter = new DynamicParameters();
+                    parameter.Add("@BrandName", brand.BrandName);
+                    parameter.Add("@Description", brand.Description);
+                    parameter.Add("@IsActive", brand.IsActive);
+                    parameter.Add("@BrandId", brand.BrandId);
+
+                    int rowsAffected = await con.ExecuteAsync("UpdateBrand", parameter, commandType: CommandType.StoredProcedure);
+                    return rowsAffected > 0;
+                }
             }
+            catch (Exception)
+            {
+                return false;
+            }
+
         }
 
-        public async Task<bool> DeleteBrand(int brand)
+        public async Task<bool> DeleteBrand(Brand brand)
         {
-            
+
             using (var conn = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();
-                parameter.Add("@BrandId", brand);
+                parameter.Add("@BrandId", brand.BrandId);
 
                 int rowsAffected = await conn.ExecuteAsync("DeleteBrand", parameter, commandType: CommandType.StoredProcedure);
                 return rowsAffected > 0;

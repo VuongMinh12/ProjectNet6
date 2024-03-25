@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication3.Interfaces;
 using WebApplication3.Models;
@@ -7,6 +8,7 @@ namespace WebApplication3.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   
     public class BrandController : ControllerBase
     {
         private readonly IBrandRespository brandRespository;
@@ -15,10 +17,11 @@ namespace WebApplication3.Controllers
             this.brandRespository = brandRespository;
         }
 
+        [EnableCors("MyAllowSpecificOrigins")]
         [HttpGet]
-        public async Task<IEnumerable<Brand>> GetBrand(BrandSearch brand)
+        public async Task<IEnumerable<Brand>> GetBrand(int PageNumber, int PageSize , string BrandName, bool IsActive)
         {
-            var brands = await brandRespository.GetBrand(brand);
+            var brands = await brandRespository.GetBrand(PageNumber, PageSize , BrandName, IsActive);
             return brands;
         }
 
@@ -27,13 +30,10 @@ namespace WebApplication3.Controllers
         {
             try
             {
-
-
                 return await brandRespository.AddBrand(brand);
             }
             catch (Exception ex)
             {
-
                 throw new Exception(ex.Message);
             }
         }

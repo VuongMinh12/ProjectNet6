@@ -4,6 +4,7 @@ using WebApplication3.Models;
 using Dapper;
 using System.Data;
 using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Mvc;
 namespace WebApplication3.Respository
 {
     public class BrandRespository : IBrandRespository
@@ -18,32 +19,35 @@ namespace WebApplication3.Respository
 
         public async Task<int> AddBrand(Brand brand)
         {
-
-            using (var con = _dapperContext.CreateConnection())
+            try
             {
-                var parameter = new DynamicParameters();
-                parameter.Add("@BrandName", brand.BrandName);
-                parameter.Add("@Description", brand.Description);
-
-                brand.BrandId = Convert.ToInt32( await con.ExecuteScalarAsync("AddBrand", parameter, commandType: CommandType.StoredProcedure));
-               
-
-                return brand.BrandId ;
+                using (var con = _dapperContext.CreateConnection())
+                {
+                    var parameter = new DynamicParameters();
+                    parameter.Add("@BrandName", brand.BrandName);
+                    parameter.Add("@Description", brand.Description);
+                    brand.BrandId = Convert.ToInt32(await con.ExecuteScalarAsync("AddBrand", parameter, commandType: CommandType.StoredProcedure));
+                    return brand.BrandId;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
 
-        public async Task<IEnumerable<Brand>> GetBrand(BrandSearch brand)
+        public async Task<IEnumerable<Brand>> GetBrand( int PageNumber, int PageSize, string BrandName, bool IsActive)
         {
             try
             {
                 using (var connection = _dapperContext.CreateConnection())
                 {
                     var parameter = new DynamicParameters();
-                    parameter.Add("@PageNumber", brand.PageNumber);
-                    parameter.Add("@PageSize", brand.PageSize);
-                    parameter.Add("@BrandName", brand.BrandName);
-                    parameter.Add("@IsActive", brand.IsActive);
+                    parameter.Add("@PageNumber", PageNumber);
+                    parameter.Add("@PageSize", PageSize);
+                    parameter.Add("@BrandName", "" );
+                    parameter.Add("@IsActive",null);
 
                     var brands = await connection.QueryAsync<Brand>("GetBrand", parameter, commandType: CommandType.StoredProcedure);
 
@@ -55,7 +59,7 @@ namespace WebApplication3.Respository
                 throw new Exception(ex.Message);
             }
 
-        }
+         }
 
         public async Task<bool> UpdateBrand(Brand brand)
         {
@@ -78,12 +82,10 @@ namespace WebApplication3.Respository
             {
                 return false;
             }
-
         }
 
         public async Task<bool> DeleteBrand(Brand brand)
         {
-
             using (var conn = _dapperContext.CreateConnection())
             {
                 var parameter = new DynamicParameters();

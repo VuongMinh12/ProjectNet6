@@ -5,6 +5,7 @@ using Dapper;
 using System.Data;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 namespace WebApplication3.Respository
 {
     public class BrandRespository : IBrandRespository
@@ -37,17 +38,18 @@ namespace WebApplication3.Respository
         }
 
 
-        public async Task<IEnumerable<Brand>> GetBrand( int PageNumber, int PageSize, string BrandName, bool IsActive)
+        public async Task<IEnumerable<Brand>> GetBrand( int PageNumber, int PageSize, string? BrandName, bool? IsActive)
         {
             try
             {
+                
                 using (var connection = _dapperContext.CreateConnection())
                 {
                     var parameter = new DynamicParameters();
                     parameter.Add("@PageNumber", PageNumber);
                     parameter.Add("@PageSize", PageSize);
-                    parameter.Add("@BrandName", "" );
-                    parameter.Add("@IsActive",null);
+                    parameter.Add("@BrandName", BrandName);
+                    parameter.Add("@IsActive", IsActive);
 
                     var brands = await connection.QueryAsync<Brand>("GetBrand", parameter, commandType: CommandType.StoredProcedure);
 

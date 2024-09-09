@@ -20,7 +20,8 @@ namespace WebApplication3.Controllers
         [EnableCors("MyAllowSpecificOrigins")]
         [HttpGet]
         public async Task<IEnumerable<Brand>> GetBrand(int PageNumber, int PageSize , string? BrandName, bool? IsActive)
-         {
+         
+        {
             var brands = await brandRespository.GetBrand(PageNumber, PageSize , BrandName, IsActive);
             return brands;
         }

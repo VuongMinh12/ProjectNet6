@@ -73,7 +73,6 @@ namespace WebApplication3.Respository
                     var parameter = new DynamicParameters();
                     parameter.Add("@BrandName", brand.BrandName);
                     parameter.Add("@Description", brand.Description);
-                    parameter.Add("@IsActive", brand.IsActive);
                     parameter.Add("@BrandId", brand.BrandId);
 
                     int rowsAffected = await con.ExecuteAsync("UpdateBrand", parameter, commandType: CommandType.StoredProcedure);
